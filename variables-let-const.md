@@ -1,5 +1,7 @@
+```javascript 
 console.log("Bienvenido!");
 // la palabra reservada let, sirve para inicializar una variable, por ejemplo cont, y nos permite REASIGNARLE un valor, asimismo, inicializarla undefined
+
 let contador = 0;
 contador = contador + 1;
 contador = contador + 1;
@@ -37,3 +39,4 @@ const persona = {
 persona.nombre = "Staenly";
 console.log(persona);
 console.log(persona.nombre);
+```
