@@ -1,0 +1,26 @@
+[
+  {
+    "album": "Let Go",
+    "artista": "Avril Lavigne",
+    "genero": "punk",
+    "stock": 90
+  },
+  {
+    "album": "This Is Why",
+    "artista": "Paramore",
+    "genero": "alternative rock",
+    "stock": 80
+  },
+  {
+    "album": "Fallen",
+    "artista": "Evanescence",
+    "genero": "rock gótico",
+    "stock": 0
+  },
+  {
+    "album": "The Quantum Enigma",
+    "artista": "Epica",
+    "genero": "metal sinfónico",
+    "stock": 70
+  }
+]

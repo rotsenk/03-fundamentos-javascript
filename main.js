@@ -1,59 +1,47 @@
-const albums = [
-    {
-        album: "Let Go",
-        artista: "Avril Lavigne",
-        genero: "punk",
-        stock: 90,
-    },
-    {
-        album: "This Is Why",
-        artista: "Paramore",
-        genero: "alternative rock",
-        stock: 80,
-    },
-    {
-        album: "Fallen",
-        artista: "Evanescence",
-        genero: "rock gótico",
-        stock: 0,
-    },
-    {
-        album: "The Quantum Enigma",
-        artista: "Epica",
-        genero: "metal sinfónico",
-        stock: 70,
-    },
-]
+const app = document.getElementById("app");
 
-const [albumOne, albumTwo, albumThree, albumFour] = albums;
+//hacer este spinner después de finally
+const spinner = document.getElementById("spinner");
+spinner.innerHTML = `
+<div class="spinner-grow" role="status">
+<span class="visually-hidden">Loading...</span>
+</div>
+`
 
-//trabajando con arrow function
-const  btnClass = (stock) => {
+fetch("data.json")
+  .then((res) => {
+    if (!res.ok) {
+      throw { ok: false, msg: "Error 404" };
+    }
+    return res.json();
+  })
+  .then((data) => {
+    //una vez que tenemos la data, hacemos el proceso de llamar a las cards
+    data.forEach((item) => {
+      //console.log(item);//aquí podemos ver que los trae uno a uno
+      app.innerHTML += Card(item);
+      //el foreach recibe una función de callback, pintamos el item en cada iteración
+      //el foreach se detiene cuando termina el consumo del array
+    });
+  })
+  .catch((err) => console.log(err.message))
+  .finally(() => /*console.log("finally")*/ (spinner.innerHTML=""));//finally, independientemente la promesa falla o se cumple correctamente, vamos a tener siempre esta acción
+//nos sirve mucho para hacer un spinner
+
+const btnClass = (stock) => {
   return stock > 0 ? "btn-primary" : "btn-danger disabled";
 }
 
 function Card(albums) {
-    console.log(albums);
-    //podemos hacer la desestructuración aquí adentro, llamando las propiedades
-    //o también directamente como parametros de la función
-    const { album, artista, genero, stock } = albums;
-    //cómo reemplazamos la infor en el card?
-    //simplemente usamos lo que se llama "interpolación" ${} y dentro esto recibe un JS expresado, en este caso, las variables destructuradas
-    return `
-    <div class="card my-2">
+  console.log(albums);
+  const { album, artista, genero, stock } = albums;
+  return `
+    <div class="card mb-2">
     <div class="card-body">
       <h5 class="card-title">${album}</h5>
       <p class="card-text">${artista} - ${genero}</p>
-      <a href="#" class="btn ${
-        btnClass(stock)//aquí la llamada a la función
-      }">Buy</a>
+      <a href="#" class="btn ${btnClass(stock)}">Buy</a>
     </div>
   </div>
   `
 }
-
-//pasar el valor, es como que yo tome el objeto y se lo pase a la función, ese valor caso de desestructurarse, se convierte en parametro y ese parametro viaja con la info hacia donde la colocamos
-app.innerHTML = Card(albumOne);//aquí le pasamos el valor
-app.innerHTML += Card(albumTwo);
-app.innerHTML += Card(albumThree);
-app.innerHTML += Card(albumFour);
