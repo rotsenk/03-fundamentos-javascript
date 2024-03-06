@@ -101,3 +101,55 @@ function Card(albums) {
 }
 
 ```
+
+# Analizando...
+```js
+fetch("./public/data.json")
+    .then((res) => {
+        if (!res.ok) {
+            throw { ok: false, msg: "Error 404" }
+        }
+        return res.json();
+    })
+    .then((data) =>
+        data.forEach((item) => {
+            cardPrincipal.innerHTML += Card(item);
+        })
+    )
+    .catch((err) => cardPrincipal.innerHTML = "Error 404")
+    .finally(() => {
+        setTimeout(() =>{
+            spinner.innerHTML=" ";
+        }, 1000)
+    } );
+
+```
+Analicemos el código paso a paso:
+- `fetch("./public/data.json")`:
+    - Esta línea utiliza la función fetch para realizar una solicitud HTTP a un archivo llamado "data.json" ubicado en la carpeta "./public".
+    - La función fetch devuelve una promesa que representa la respuesta de la solicitud.
+    - La promesa se pasa al siguiente bloque `.then()`.
+
+- `.then((res) => {...})`:
+    - Aquí, estamos encadenando un bloque `.then()` a la promesa devuelta por fetch.
+    - El parámetro res representa la respuesta de la solicitud.
+    - Si la respuesta no es exitosa (por ejemplo, si ocurre un error 404), se lanza una excepción con un objeto que contiene la propiedad ok establecida en false y un mensaje de error "Error 404".
+    - Si la respuesta es exitosa, se llama a res.json() para analizar el contenido de la respuesta como JSON.
+    - La promesa resultante se pasa al siguiente bloque `.then()`.
+
+- `.then((data) => {...})`:
+    - En este bloque, estamos manejando los datos analizados del archivo JSON.
+    - La variable data contiene el resultado del análisis JSON.
+    - Para cada elemento en data, se ejecuta la función proporcionada. En este caso, se agrega contenido al elemento con el id cardPrincipal utilizando la función Card(item).
+    - Esto asume que existe una función llamada Card que toma un objeto item como argumento y devuelve una representación HTML.
+
+- `.catch((err) => cardPrincipal.innerHTML = "Error 404")`:
+    - Si ocurre un error en cualquiera de los bloques anteriores (por ejemplo, si la solicitud falla o si el análisis JSON falla), se captura en este bloque.
+    - En ese caso, establecemos el contenido del elemento con el id cardPrincipal en "Error 404".
+
+- `.finally(() => {...})`:
+    - El bloque finally se ejecuta siempre, independientemente de si hubo éxito o error.
+    - Aquí, estamos utilizando setTimeout para esperar 1000 milisegundos (1 segundo) antes de ejecutar la función proporcionada.
+    - Dentro de esa función, establecemos el contenido del elemento con el id spinner en una cadena vacía, lo que oculta el spinner.
+
+En resumen, este código realiza una solicitud para obtener datos desde "data.json", maneja los datos obtenidos y muestra un mensaje de error si algo sale mal. Luego, oculta el spinner después de un segundo.
